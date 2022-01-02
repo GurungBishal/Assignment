@@ -1,6 +1,6 @@
-import { Document, model, Schema } from 'mongoose';
+import { Document, model, ObjectId, Schema } from 'mongoose';
 
-export interface ICompany extends Document<number> {
+export interface ICompany extends Document<ObjectId> {
   title: string;
   image: string;
   description: string;
