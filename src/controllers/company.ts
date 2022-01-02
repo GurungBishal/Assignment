@@ -6,10 +6,6 @@ import {
   checkIfValidationHasError,
   pagination,
 } from '../middleware';
-import fs from 'fs';
-import { promisify } from 'util';
-
-const unlinkAsync = promisify(fs.unlink);
 
 export const createCompany: RequestController = [
   ...companyValidator(false),
@@ -85,10 +81,6 @@ export const updateCompany: RequestController = [
       const company = res.typedLocals.requestedResource as unknown as ICompany;
       const filePath = req?.file?.path;
 
-      if (filePath && filePath !== company.image) {
-        await unlinkAsync(company.image);
-      }
-
       await company.updateOne({ ...req.body, image: filePath });
 
       return res.status(200).json(company);
@@ -106,8 +98,6 @@ export const deleteCompany: RequestController = [
       const company = res.typedLocals.requestedResource as unknown as ICompany;
 
       await company.delete();
-
-      await unlinkAsync(company.image);
 
       return res.status(200).json(company);
     } catch (error) {
